@@ -38,8 +38,9 @@ class Fetch extends Component {
 	}
 
 	removeOne() {
+		console.log("removed one");
 		this.setState(prevState => {
-			fullname: [...this.state.fullname.splice(0, 1)]
+			fullname: [...this.state.fullname.splice(1)]
 		});
 	}
 
