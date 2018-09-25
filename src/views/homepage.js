@@ -10,7 +10,6 @@ class Homepage extends Component {
 			<div>
 				<p> This is the Homepage. </p>
 				<p> <Link to='/contact'>Contact us!</Link></p>
-				
 				<Fetch />
 			</div>
 		)

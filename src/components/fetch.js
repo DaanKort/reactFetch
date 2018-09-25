@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-
 import Text from '../components/text';
 class Fetch extends Component {
 
@@ -8,6 +7,7 @@ class Fetch extends Component {
 		this.state = {
 			fullname: [],
 		};
+		this.removeOne = this.removeOne.bind(this);
 	}
 
 	componentDidMount() {
@@ -15,42 +15,51 @@ class Fetch extends Component {
 			return string.charAt(0).toUpperCase() + string.slice(1);
 		}
 
-		const url = 'https://randomuser.me/api/?results=10';
+		let url = 'https://randomuser.me/api/?results=11';
 		fetch(url)
-			.then((resp) => resp.json())
-			.then(data => {
-				const contacts = data.results;
-				contacts.forEach(contact => {
-					const fullname = upper(contact.name.first) + " " + upper(contact.name.last);
-					this.setState(prevState => ({
-						fullname: [...prevState.fullname, fullname]
-					}));
-				});
+		.then((resp) => resp.json())
+		.then(data => {
+			const contacts = data.results;
+			console.log(contacts);
+			contacts.forEach(contact => {
+				const fullname = upper(contact.name.first) + " " + upper(contact.name.last);
+				this.setState(prevState => ({
+					fullname: [...prevState.fullname, fullname]
+				}));
 			});
-	}
-
-	outPutAllNames() {
-		let output = [];
-		for (let i = 0; i < this.state.fullname.length; i++) {
-			output.push(<li key={i}>{this.state.fullname[i]}</li>);
-		}
-		return output;
-	}
-
-	removeOne() {
-		console.log("removed one");
-		this.setState(prevState => {
-			fullname: [...this.state.fullname.splice(1)]
 		});
 	}
+
+	removeOne(index) {
+		this.setState(prevState => {
+			fullname: [...this.state.fullname.splice(index, 1)]
+			this.forceUpdate();
+			console.log(this.state.fullname);
+		});
+	}	
 
 	render() {
 		return (
 			<div>
-				<Text onclick="removeOne()" msg='Lekker knikkeren' />
-				<ul>
+				<Text onClick={this.removeOne} msg='Lekker knikkeren' />
+				<button onClick={this.removeOne}>
+					Delete
+				</button>
+
+				{
+				this.state.fullname.map( (names,i) => {
+					return(	
+						<ul>
+							<li key={i}>{names}</li>
+						</ul>)
+					})
+			}
+				
+				
+				
+				{/* <ul>
 					{this.outPutAllNames()}
-				</ul>
+				</ul> */}
 			</div>
 		)
 	}
